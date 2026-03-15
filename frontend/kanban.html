@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board - Task & Team Project Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .kanban-column {
+            background-color: #F3F4F6;
+            border-radius: var(--radius);
+            padding: 1rem;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .column-header {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .column-header.todo {
+            border-bottom-color: var(--gray);
+        }
+
+        .column-header.progress {
+            border-bottom-color: var(--warning);
+        }
+
+        .column-header.completed {
+            border-bottom-color: var(--secondary);
+        }
+
+        .task-card {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            cursor: grab;
+            transition: transform 0.2s;
+            border-left: 4px solid var(--gray);
+        }
+
+        .task-card:active {
+            cursor: grabbing;
+            transform: scale(0.98);
+        }
+
+        .task-card.todo {
+            border-left-color: var(--gray);
+        }
+
+        .task-card.progress {
+            border-left-color: var(--warning);
+        }
+
+        .task-card.completed {
+            border-left-color: var(--secondary);
+        }
+
+        .task-card h4 {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .task-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .task-meta i {
+            width: 16px;
+            text-align: center;
+        }
+
+        .drag-over {
+            background-color: #E5E7EB;
+            outline: 2px dashed var(--primary);
+        }
+
+        @media (max-width: 1024px) {
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+
+            .kanban-column {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fa-solid fa-layer-group"></i> TaskManager</h2>
+            </div>
+
+            <div class="user-info">
+                <div class="avatar" id="userInitials">U</div>
+                <div class="user-details">
+                    <h4 id="userName">User Name</h4>
+                    <p id="userRole">Role</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i> Projects</a></li>
+                    <li><a href="tasks.html"><i class="fa-solid fa-list-check"></i> Tasks</a></li>
+                    <li><a href="kanban.html" class="active"><i class="fa-solid fa-border-all"></i> Kanban Board</a>
+                    </li>
+                    <li><a href="team.html"><i class="fa-solid fa-users"></i> Team</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="api.logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Kanban Board</h1>
+                <div class="form-group" style="margin: 0; min-width: 250px;">
+                    <select id="filterProject" class="form-control">
+                        <option value="">All Projects</option>
+                    </select>
+                </div>
+            </header>
+
+            <div class="kanban-board">
+                <!-- To Do Column -->
+                <div class="kanban-column" id="col-todo" data-status="To Do">
+                    <div class="column-header todo">
+                        <span>To Do</span>
+                        <span class="count" id="count-todo">0</span>
+                    </div>
+                    <div class="tasks-dropzone" id="drop-todo"
+                        style="flex:1; display:flex; flex-direction:column; gap:1rem;"></div>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="kanban-column" id="col-progress" data-status="In Progress">
+                    <div class="column-header progress">
+                        <span>In Progress</span>
+                        <span class="count" id="count-progress">0</span>
+                    </div>
+                    <div class="tasks-dropzone" id="drop-progress"
+                        style="flex:1; display:flex; flex-direction:column; gap:1rem;"></div>
+                </div>
+
+                <!-- Completed Column -->
+                <div class="kanban-column" id="col-completed" data-status="Completed">
+                    <div class="column-header completed">
+                        <span>Completed</span>
+                        <span class="count" id="count-completed">0</span>
+                    </div>
+                    <div class="tasks-dropzone" id="drop-completed"
+                        style="flex:1; display:flex; flex-direction:column; gap:1rem;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/kanban.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Task & Team Project Management</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fa-solid fa-layer-group"></i> TaskManager</h2>
+            </div>
+
+            <div class="user-info">
+                <div class="avatar" id="userInitials">U</div>
+                <div class="user-details">
+                    <h4 id="userName">User Name</h4>
+                    <p id="userRole">Role</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i> Projects</a></li>
+                    <li><a href="tasks.html"><i class="fa-solid fa-list-check"></i> Tasks</a></li>
+                    <li><a href="kanban.html"><i class="fa-solid fa-border-all"></i> Kanban Board</a></li>
+                    <li><a href="team.html"><i class="fa-solid fa-users"></i> Team</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="api.logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Overview</h1>
+                <div class="actions">
+                    <a href="projects.html" class="btn btn-primary"><i class="fa-solid fa-plus"></i> New Project</a>
+                </div>
+            </header>
+
+            <!-- Dashboard Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Total Projects</h3>
+                        <p id="statProjects">...</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fa-solid fa-list-ul"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Total Tasks</h3>
+                        <p id="statTotalTasks">...</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon secondary">
+                        <i class="fa-solid fa-check-double"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Completed</h3>
+                        <p id="statCompletedTasks">...</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon danger">
+                        <i class="fa-solid fa-spinner"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Pending Tasks</h3>
+                        <p id="statPendingTasks">...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: var(--card-bg); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Recent
+                    Activity</h3>
+                <p id="activityMsg" style="color: var(--text-muted);">Loading actvity...</p>
+                <ul id="activityList" style="list-style: none; padding: 0;"></ul>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>
